@@ -45,7 +45,10 @@ const HomePage = () => {
                       <Paper style={{maxHeight: 200, overflow: 'auto'}}></Paper>
                       <Box maxHeight="75" marginBottom="30px" overflow="auto">
                         <ImageCard image={"/backgrounds/dark-1.png"}/>
-                        <ImageCard image={"/backgrounds/dark-1.png"}/>
+                        <ImageCard image={"/backgrounds/harbour.png"}/>
+                        <ImageCard image={"/backgrounds/lake.png"}/>
+                        <ImageCard image={"/backgrounds/meteor.png"}/>
+                        <ImageCard image={"/backgrounds/valley.png"}/>
                       </Box>
                       <Paper/>
                 </Box>

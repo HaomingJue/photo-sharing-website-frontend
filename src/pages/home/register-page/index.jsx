@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router';
 
 
 
-export default function SignIn() {
+export default function RegisterPage() {
 
   let navigate = useNavigate()
 
@@ -43,14 +43,14 @@ export default function SignIn() {
           }}
         >
           <Box marginTop="40px" >
-          <img  src="/harbour.png" alt='unavilable' width="200px" height="150px" style={{ cursor: "pointer", borderRadius: "90%", opacity: "0.75"}}></img>
+        
           </Box>
 {/* 
           <Typography component="h1" variant="h3" color="#9966ff"  marginTop="20px">
             Welcome to
           </Typography> */}
           <Typography component="h1" variant="h4" color="#42a5f5 " marginTop="30px" marginBottom="20px">
-            Photo Sharing Harbour
+            Register An Account
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} >
             <TextField
@@ -59,10 +59,9 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
             />
             <TextField
              sx={{input: {color: "#42a5f5 "}}}
@@ -74,7 +73,17 @@ export default function SignIn() {
               label="Password"
               type="password"
               id="password"
-              autoComplete="current-password"
+            />
+            <TextField
+             sx={{input: {color: "#42a5f5 "}}}
+             InputLabelProps={{className: "textfield__input"}}
+              margin="normal"
+              required
+              fullWidth
+              name="repeat-password"
+              label="Repeat Password"
+              type="password"
+              id="password"
             />
 
             <Button
@@ -83,12 +92,12 @@ export default function SignIn() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Sign Up
             </Button>
             <Grid container>
               <Grid item marginBottom="20px">
-                <Link href="/register" variant="b5" color={"#ffffff"} >
-                  {"Don't have an account? Sign Up"}
+                <Link href="/login" variant="b5" color={"#ffffff"} >
+                  {"Back to Login"}
                 </Link>
               </Grid>
             </Grid>

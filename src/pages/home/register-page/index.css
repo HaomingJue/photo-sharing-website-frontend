@@ -1,0 +1,17 @@
+.RegisterPage {
+    background-image: url("/public/backgrounds/login.png");
+    position: fixed;
+    min-width: 100%;
+    min-height: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+.textfield {
+    border: #9933ff !important;
+}
+
+.textfield__input {
+    color: #42a5f5 !important;
+    border: #9966ff !important;
+}

@@ -1,6 +1,6 @@
-import { MenuItem, Typography } from "@mui/material";
+import { Link, MenuItem, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { Link } from "react-router-dom";
+
 
 
 // or
@@ -14,8 +14,8 @@ const Topbar = () => {
                 <Box>
                     <MenuItem>
                         <Typography variant="h5">
-                            <Link to="/login"  style={{textDecoration: 'none', color:"#ffffff"}}> 
-                                home
+                            <Link href="/login"  style={{textDecoration: 'none', color:"#ffffff"}}> 
+                                Home
                             </Link>
                         </Typography>
                     </MenuItem>
@@ -23,7 +23,7 @@ const Topbar = () => {
                 <Box>
                     <MenuItem>
                         <Typography variant="h5">
-                            <Link to="/login"  style={{textDecoration: 'none', color:"#ffffff"}}> 
+                            <Link href="/login"  style={{textDecoration: 'none', color:"#ffffff"}}> 
                                 My Space
                             </Link>
                         </Typography>
@@ -32,7 +32,7 @@ const Topbar = () => {
                 <Box>
                     <MenuItem>
                         <Typography variant="h5">
-                            <Link to="/login"  style={{textDecoration: 'none', color:"#ffffff"}}> 
+                            <Link href="/login"  style={{textDecoration: 'none', color:"#ffffff"}}> 
                                 Favorites
                             </Link>
                         </Typography>
@@ -42,7 +42,7 @@ const Topbar = () => {
                 <Box>
                     <MenuItem>
                         <Typography variant="h5">
-                            <Link to="/login"  style={{textDecoration: 'none', color:"#ffffff"}}> 
+                            <Link href="/login"  style={{textDecoration: 'none', color:"#ffffff"}}> 
                                 Upload
                             </Link>
                         </Typography>
@@ -52,7 +52,7 @@ const Topbar = () => {
                 <Box>
                     <MenuItem>
                         <Typography variant="h5">
-                            <Link to="/login"  style={{textDecoration: 'none', color:"#ffffff"}}> 
+                            <Link href="/login"  style={{textDecoration: 'none', color:"#ffffff"}}> 
                                 Logout
                             </Link>
                         </Typography>
