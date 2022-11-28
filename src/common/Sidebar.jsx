@@ -26,7 +26,6 @@ const Sidebar = () => {
                     Frankson
                 </Typography>
             </Grid>
-
         </Box>
     )
 }
