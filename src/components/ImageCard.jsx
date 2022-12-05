@@ -38,14 +38,10 @@ const ImageCard = ({image, hideDeleteButton=false}) => {
       
       <CardHeader
         avatar={
-          <Avatar color>r</Avatar>
-        //   <img
-        //   alt="profile-user"
-        //   width="40px"
-        //   height="40px"
-        //   src={"/user-icons/elon-musk.png"}
-        //   style={{ cursor: "pointer", borderRadius: "50%" }}
-        // />
+            <Avatar sx={{ bgcolor: 'red' }} aria-label="recipe">
+              R
+            </Avatar>
+
         }
         action={
           <IconButton aria-label="settings">

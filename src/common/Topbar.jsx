@@ -1,9 +1,22 @@
-import { Link, MenuItem, Typography } from "@mui/material";
+import {  MenuItem, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import { useLocation } from "react-router";
+import { Link } from "react-router-dom";
 
 
-
-// or
+const Item = ({title, url}) => {
+    let location = useLocation()
+    console.log(location.pathname)
+    return (
+        <MenuItem>
+            <Typography variant="h5">
+                <Link to={url} style={{textDecoration: 'none', color: location.pathname === url ? "#bf80ff" : "#ffffff"}}> 
+                    {title}
+                </Link>
+            </Typography>
+        </MenuItem>
+    )
+} 
 
 
 const Topbar = () => {
@@ -12,56 +25,38 @@ const Topbar = () => {
     <Box sx={{ backgroundColor: "rgba(0,0,0,.5)" ,color: "#fff" }}>
         <Box display="flex" justifyContent="space-between" flex padding={2} margin={"0 50px 0 50px"}>
                 <Box>
-                    <MenuItem>
-                        <Typography variant="h5">
-                            <Link href="/login"  style={{textDecoration: 'none', color:"#ffffff"}}> 
-                                Home
-                            </Link>
-                        </Typography>
-                    </MenuItem>
+                    <Item 
+                        title="All Photos"
+                        url="/home/all-photos"
+                    />
+                </Box>
+                <Box>
+                    <Item 
+                        title="My Space"
+                        url="/home/my-space"
+                    />
+                </Box>
+                <Box>
+                    <Item 
+                        title="Favorites"
+                        url="/home/favorites"
+                    />
+                </Box>
+                <Box>
+                    <Item 
+                        title="Upload"
+                        url="/home/upload"
+                    />
                 </Box>
                 <Box>
                     <MenuItem>
                         <Typography variant="h5">
-                            <Link href="/login"  style={{textDecoration: 'none', color:"#ffffff"}}> 
-                                My Space
-                            </Link>
-                        </Typography>
-                    </MenuItem>
-                </Box>
-                <Box>
-                    <MenuItem>
-                        <Typography variant="h5">
-                            <Link href="/login"  style={{textDecoration: 'none', color:"#ffffff"}}> 
-                                Favorites
-                            </Link>
-                        </Typography>
-                    </MenuItem>
-                </Box>
-    
-                <Box>
-                    <MenuItem>
-                        <Typography variant="h5">
-                            <Link href="/login"  style={{textDecoration: 'none', color:"#ffffff"}}> 
-                                Upload
-                            </Link>
-                        </Typography>
-                    </MenuItem>
-                </Box>
-    
-                <Box>
-                    <MenuItem>
-                        <Typography variant="h5">
-                            <Link href="/login"  style={{textDecoration: 'none', color:"#ffffff"}}> 
+                            <Link onClick={() => {console.log("hello");}} to={"/login"} style={{textDecoration: 'none', color:"#ffffff"}}> 
                                 Logout
                             </Link>
                         </Typography>
                     </MenuItem>
                 </Box>
-    
-    
-           
-
         </Box>
 
     </Box>

@@ -25,7 +25,7 @@ export default function SignIn() {
       email: data.get('email'),
       password: data.get('password'),
     });
-    navigate("/home")
+    navigate("/home/all-photos")
   };
 
   return (
@@ -45,10 +45,6 @@ export default function SignIn() {
           <Box marginTop="40px" >
           <img  src="/harbour.png" alt='unavilable' width="200px" height="150px" style={{ cursor: "pointer", borderRadius: "90%", opacity: "0.75"}}></img>
           </Box>
-{/* 
-          <Typography component="h1" variant="h3" color="#9966ff"  marginTop="20px">
-            Welcome to
-          </Typography> */}
           <Typography component="h1" variant="h4" color="#42a5f5 " marginTop="30px" marginBottom="20px">
             Photo Sharing Harbour
           </Typography>
