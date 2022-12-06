@@ -1,9 +1,7 @@
 import {  getLocal } from './localStorage';
 
 export const checkLoginStatus = () => {
-    let currentUser = getLocal('user');
-    if (currentUser?.token) {
-        return true;
-    }   
-    return false;
+    let currentUser = getLocal('account');
+    console.log(currentUser)
+    return currentUser !== null;
 }

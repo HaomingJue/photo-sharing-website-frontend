@@ -8,30 +8,68 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import "./index.css";
 import { useNavigate } from 'react-router';
+import { checkLoginStatus } from '../../services/checkLoginStatus';
+import { gql, useLazyQuery } from '@apollo/client';
+import { setLocal } from '../../services/localStorage';
+import { useState } from 'react';
 
 
-
-
+const LOGINQUERY = gql`
+  query Login($username: String!, $password: String!) {
+      login(username: $username, password: $password) {
+          username
+          photos
+          id
+          likedPhotos
+      }
+  }`
 
 export default function SignIn() {
 
+  // initial check
   let navigate = useNavigate()
+  React.useEffect(() => {
+    if (checkLoginStatus()) {
+      navigate("/home/all-photos");
+    }
+  }, [navigate]);
+
+  const [username, setUsername] = useState(null);
+  const [password, setPassword] = useState(null);
 
 
+  // graphql Query
+  const [login] = useLazyQuery(LOGINQUERY, {
+      onCompleted: (data) => {postLoginProcess(data.login === null ? null : data.login.username)},
+      variables: {
+        username,
+        password
+      }
+    }
+  )
+
+  // other services
+  const postLoginProcess = (verifiedUsername) => {
+    if (verifiedUsername === null) {
+      alert("Username or password is not correct")
+    }
+    else {
+      setLocal(verifiedUsername);
+      navigate("/home/all-photos")
+    }
+  }
+
+  // submit form
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-    navigate("/home/all-photos")
+      setUsername(data.get('username'));
+      setPassword(data.get('password'))
+      login()
   };
 
   return (
     <Box className="LoginPage">
- 
-
       <Container component="main" maxWidth="xs" sx={{backgroundColor: "rgba(0,0,0,.45)" ,color: "#fff"}}>
   
         <Box
@@ -55,10 +93,9 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
             />
             <TextField
              sx={{input: {color: "#42a5f5 "}}}
@@ -70,7 +107,6 @@ export default function SignIn() {
               label="Password"
               type="password"
               id="password"
-              autoComplete="current-password"
             />
 
             <Button

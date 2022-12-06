@@ -8,25 +8,83 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import "./index.css";
 import { useNavigate } from 'react-router';
+import { useMutation, gql, useLazyQuery } from "@apollo/client"; 
+import { useState } from 'react';
 
+const ADD_USER = gql`
+  mutation addUser($username: String!, $password: String!) {
+      addUser(username: $username, password: $password) {
+          username
+      }
+  }`
 
+const CHECK_USER = gql`
+  query checkUser($username: String!) {
+    userByUsername(username: $username) {
+        username
+    }
+}`
 
 
 
 export default function RegisterPage() {
 
-  let navigate = useNavigate()
+  let navigate = useNavigate();
 
+  const [username, setUsername] = useState(null)
+  const [password, setPassword] = useState(null)
 
+  // GraphQL
+  const [registerAccount] = useMutation(ADD_USER, {
+    onCompleted: (data) => {console.log("data", data);finishRegistration(data.addUser.username)},
+    variables: {
+        username,
+        password
+    }
+  })
+
+  const [checkUserName] = useLazyQuery(CHECK_USER, {
+    onCompleted: (data) => {examineUsername(data.userByUsername === null ? null : data.userByUsername.username)},
+    variables: {
+      username,
+    }
+  })
+
+  // Other services
+  const examineUsername = (examinedUsername) => {
+      if (examinedUsername === null) {
+        registerAccount()
+      }
+      else {
+        alert(`User ${examinedUsername} already exists`)
+      }
+  }
+
+  const finishRegistration = (finalUsername) => {
+    alert(`User ${finalUsername} is registered successfully`);
+    navigate("/login")
+  }
+
+  // Submit Form
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-    navigate("/home")
+    const formData = new FormData(event.currentTarget);
+    let curUserName = formData.get('username');
+    let curPwd = formData.get('password');
+    let curRepeatPwd = formData.get('repeat_password');
+    console.log(curUserName);
+    console.log(curPwd);
+    console.log(curRepeatPwd);
+    if (curPwd !== curRepeatPwd) {
+      alert("Passwords don't match")
+    }
+    else {
+      setUsername(curUserName)
+      setPassword(curPwd)
+      checkUserName()
+    }
   };
+
 
   return (
     <Box className="LoginPage">
@@ -80,10 +138,10 @@ export default function RegisterPage() {
               margin="normal"
               required
               fullWidth
-              name="repeat-password"
+              name="repeat_password"
               label="Repeat Password"
               type="password"
-              id="password"
+              id="repeat_password"
             />
 
             <Button

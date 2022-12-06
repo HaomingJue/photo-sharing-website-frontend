@@ -2,7 +2,7 @@ import './App.css';
 import HomePage from './pages/home/home-page';
 import LoginPage from './pages/login';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import RegisterPage from './pages/home/register-page';
+import RegisterPage from './pages/register-page';
 import { AllPhotosPage } from './pages/home/home';
 import { UploadPhotoPage } from './pages/home/upload-photo';
 import { FavoritesPage } from './pages/home/favorites';

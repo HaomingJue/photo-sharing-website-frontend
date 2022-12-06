@@ -2,6 +2,7 @@ import {  MenuItem, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
+import { clearLocal } from "../services/localStorage";
 
 
 const Item = ({title, url}) => {
@@ -51,7 +52,7 @@ const Topbar = () => {
                 <Box>
                     <MenuItem>
                         <Typography variant="h5">
-                            <Link onClick={() => {console.log("hello");}} to={"/login"} style={{textDecoration: 'none', color:"#ffffff"}}> 
+                            <Link onClick={() => {clearLocal()}} to={"/login"} style={{textDecoration: 'none', color:"#ffffff"}}> 
                                 Logout
                             </Link>
                         </Typography>
