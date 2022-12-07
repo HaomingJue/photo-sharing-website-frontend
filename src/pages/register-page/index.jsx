@@ -37,6 +37,7 @@ export default function RegisterPage() {
   // GraphQL
   const [registerAccount] = useMutation(ADD_USER, {
     onCompleted: (data) => {console.log("data", data);finishRegistration(data.addUser.username)},
+    onError: (err)=> {alert(`${err}`)},
     variables: {
         username,
         password
@@ -72,9 +73,6 @@ export default function RegisterPage() {
     let curUserName = formData.get('username');
     let curPwd = formData.get('password');
     let curRepeatPwd = formData.get('repeat_password');
-    console.log(curUserName);
-    console.log(curPwd);
-    console.log(curRepeatPwd);
     if (curPwd !== curRepeatPwd) {
       alert("Passwords don't match")
     }

@@ -1,28 +1,75 @@
-// import { gql, useMutation } from "@apollo/client"
+import { gql, useLazyQuery, useMutation } from "@apollo/client"
 import { Button, Grid, TextareaAutosize, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import { useState } from "react"
 import ReactDropZone from "../../../components/DropZone"
+import { getLocal } from "../../../services/localStorage"
 
 
-// const ADD_USER = gql`
-//   mutation addUser($username: String!, $password: String!) {
-//       addUser(username: $username, password: $password) {
-//           username
-//       }
-//   }`
+const ADD_PHOTO = gql`
+  mutation addPhoto($curTitle: String!, $curDescription: String!, $curUsername: String!, $curImageBase64: String!) {
+      addPhoto(title: $curTitle, description : $curDescription, uploadedUser: $curUsername, imgBase64: $curImageBase64) {
+          title
+      }
+  }`
+
+const CEHECK_PHOTO_TITLE = gql`
+query checkPhotoTitle($curTitle: String!) {
+  photoByTitle(title: $curTitle) {
+      title
+  }
+}`
+
 
 
 
 export const UploadPhotoPage = () => {
 
-    const [imageBase64, setImageBase64] = useState("")
+    const [curTitle, setCurTitle] = useState("")
+    const [curDescription, setCurDescription] = useState("")
+    const [curUsername, setCurUsername] = useState("")
+    const [curImageBase64, setCurImageBase64] = useState("")
+
+
+    // GraphQL
+    const [checkPhotoTitle] = useLazyQuery(CEHECK_PHOTO_TITLE, {
+        // onCompleted: (data) => {console.log(data); console.log("cur title", curTitle)},
+        onCompleted: (data) => {examinePhoto(data.photoByTitle === null ? null : data.photoByTitle.title)},
+        variables: {
+          curTitle,
+        }
+      })
+    
+
+    const [uploadImage] = useMutation(ADD_PHOTO, {
+        onCompleted: (data) => {alert(`${data} is uploaded successfully`)},
+        onError: (err)=> {alert(`${err}`)},
+        variables: {
+            curTitle,
+            curDescription,
+            curUsername,
+            curImageBase64
+        }
+    })
+    
+    // Other services
+    const examinePhoto = (photoTitle) => {
+        if (curImageBase64 === "") {
+            alert("No image uploaded")
+        }
+        else if (photoTitle === null) {
+            uploadImage()
+        }
+        else {
+            alert(`${photoTitle} already exists`)
+        }
+    }
 
     function imageToBase614(file) {
         var reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = function () {
-            setImageBase64(reader.result.split(",")[1])
+            setCurImageBase64(reader.result)
         };
         reader.onerror = function (error) {
           alert('Upload Error: ', error);
@@ -34,23 +81,23 @@ export const UploadPhotoPage = () => {
     }
 
 
+    // Submit Form
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-          console.log(imageBase64)
-          console.log(data.get('title'));
-          console.log(data.get('description'));
+        console.log(getLocal())
+        setCurUsername(getLocal())
+        setCurTitle(data.get('title'));
+        setCurDescription(data.get('description'));
+        console.log("check photo title")
+        checkPhotoTitle()
       };
-    
-    // GraphQL
-    // const [registerAccount] = useMutation(ADD_USER, {
-    //     onCompleted: (data) => {console.log("data", data);finishRegistration(data.addUser.username)},
-    //     variables: {
-    //         username,
-    //         password
-    //     }
-    // })
 
+
+    //   console.log(curTitle)
+    //   console.log(curDescription)
+    //   console.log(typeof(curUsername), curUsername)
+    //   console.log(curImageBase64)
 
     return (
         <Box marginTop={"50px"}  component="form" onSubmit={handleSubmit}>
@@ -68,6 +115,10 @@ export const UploadPhotoPage = () => {
             <Grid item>
                 <ReactDropZone onDrop={handleOnDrop}/>
             </Grid>   
+            {(curImageBase64 !== "" ) && <Grid item>
+                    <img src={curImageBase64} alt="error" width="80px" height="60px"/>
+                </Grid>   
+            }
             <Grid item>
                 <TextareaAutosize
                     name="title"
@@ -98,10 +149,10 @@ export const UploadPhotoPage = () => {
             <Grid item>
                 <TextareaAutosize
                     name="description"
-                    minRows={25}
+                    minRows={20}
                     maxRows={25}
                     aria-label="maximum height"
-                    placeholder="Maximum 25 rows"
+                    placeholder="Maximum 20 rows"
                     defaultValue="Record your story and description here."
                     style={{
                         width:"410px",
@@ -130,6 +181,5 @@ export const UploadPhotoPage = () => {
             </Grid>   
         </Grid> 
         </Box>
-
     )
 }
