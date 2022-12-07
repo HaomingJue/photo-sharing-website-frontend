@@ -7,7 +7,6 @@ import { clearLocal } from "../services/localStorage";
 
 const Item = ({title, url}) => {
     let location = useLocation()
-    console.log(location.pathname)
     return (
         <MenuItem>
             <Typography variant="h5">
