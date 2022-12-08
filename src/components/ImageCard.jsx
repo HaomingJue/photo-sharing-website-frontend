@@ -72,6 +72,7 @@ const ImageCard = ({photoTitle, hideDeleteButton=true}) => {
 
   // GraphQL
   const {loading} = useQuery(GET_ONE_PHOTO, {
+    fetchPolicy: "no-cache",
     onCompleted: (data) => {
       setCurDescription(data.photoByTitle.description);
       setCurImgBase64(data.photoByTitle.imgBase64);

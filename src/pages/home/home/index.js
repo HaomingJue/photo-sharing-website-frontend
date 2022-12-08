@@ -18,6 +18,7 @@ export const AllPhotosPage = () => {
 
     
     useQuery(GET_ALL_PHOTOS, {
+        fetchPolicy: "no-cache",
         onCompleted: (data) => {setPhotoList(data.allPhotos)},
         onError: (err)=> {alert(`${err}`)},
     })

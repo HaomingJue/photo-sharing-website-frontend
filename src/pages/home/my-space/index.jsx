@@ -17,6 +17,7 @@ export const MySpacePage = () => {
     let loggedInUser = getLocal();
     const [likedList, setLikedList] = useState([])
     useQuery(GET_ALL_UPLOADED_PHOTOS, {
+        fetchPolicy: "no-cache",
         onCompleted: (data) => {
             setLikedList(data?.userByUsername?.photos);
         },
