@@ -49,9 +49,6 @@ function ReactDropZone({ onDrop, open }) {
                                 <p className="dropzone-content" color>
                                     Drag & drop some files here, or click to select files
                                 </p>
-                                <p className="dropzone-content" color>
-                                    Please do not upload photo larger than 1MB
-                                </p>
                               </Box>
                             )}
                         </Box>
