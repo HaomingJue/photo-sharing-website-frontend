@@ -4,7 +4,7 @@ This project is for GNG5300 Individual Project Frontend
 **Framework:** React.js \
 **CI/CD**: Github Actions\
 **Cloud Platform:** Azure Static Web App\
-**API Caller:** Apollo GraphQL\
+**API Caller:** Apollo GraphQL
 
 # Deployment
  https://delightful-coast-0f8ee860f.2.azurestaticapps.net/login 
