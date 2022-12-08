@@ -9,37 +9,84 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { ExpandLessOutlined, ExpandMoreOutlined } from '@mui/icons-material';
 import { Box } from '@mui/system';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { gql, useQuery } from '@apollo/client';
+import { useState } from 'react';
+import {  useNavigate } from 'react-router';
+import { colorMap } from '../common/colorMap';
+import { CircularProgress } from '@mui/material';
+
+const GET_ONE_PHOTO = gql`
+    query GetOnePhoto($photoTitle: String!) {
+        photoByTitle(title: $photoTitle) {
+            description,
+            uploadUser,
+            imgBase64,
+        }
+    }
+`
 
 
-const ImageCard = ({image, hideDeleteButton=false}) => {
+const ImageCard = ({photoTitle, hideDeleteButton=false}) => {
   const [expanded, setExpanded] = React.useState(false);
   const [favoriteColor, setFavoriteColor] = React.useState('#bfbfbf');
 
+  const [uploadUser, setUploadUser] = useState("")
+  const [curDescription, setCurDescription] = useState("");
+  const [curImgBase64, setCurImgBase64] = useState(""); 
+  const [likedList, setLikedList] = useState([])
+
+  console.log(photoTitle)
+  // GraphQL
+  const {loading} = useQuery(GET_ONE_PHOTO, {
+    onCompleted: (data) => {
+      setCurDescription(data.photoByTitle.description);
+      setCurImgBase64(data.photoByTitle.imgBase64);
+      setUploadUser(data.photoByTitle.uploadUser);
+      setLikedList(data.photoByTitle.likedList);
+      console.log({uploadUser, curDescription, photoTitle, likedList})
+    },
+    onError: (err)=> {alert(`${err} ${photoTitle}`)},
+    variables: {
+      photoTitle
+    }
+  })
+
+  // Other services
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
   const handleLike = () => {
     setFavoriteColor(favoriteColor === '#bfbfbf' ? '#ff5050' : '#bfbfbf'); 
-};
+  };
 
+  let navigate = useNavigate()
+  const handleDelete = () => {
+    navigate("/home/all-photos")
+  }
+
+  console.log(uploadUser.toUpperCase().substring(0,1))
 
   
-  let cardrightMargin = hideDeleteButton ? 55 : 50;
+  if (loading) return (
+  <Card height="300" sx={{ maxWidth: 551 ,backgroundColor: "rgba(0,0,0,.5)" ,color: "#fff" }}>
+    <CircularProgress color="inherit" />
+  </Card>   
+  )     
   
-
+  let cardrightMargin = hideDeleteButton ? 55 : 50; 
   return (
     
     <Card sx={{ maxWidth: 551 ,backgroundColor: "rgba(0,0,0,.5)" ,color: "#fff" }}>
       
       <CardHeader
         avatar={
-            <Avatar sx={{ bgcolor: 'red' }} aria-label="recipe">
-              R
+            <Avatar sx={{ bgcolor: colorMap[uploadUser.toUpperCase()[0]] }} aria-label="recipe">
+              {uploadUser.toUpperCase()[0]}
             </Avatar>
 
         }
@@ -48,13 +95,13 @@ const ImageCard = ({image, hideDeleteButton=false}) => {
             <MoreVertIcon sx={{ color: 'transparent' }}/>
           </IconButton>
         }
-        title={<Typography variant={"h6"}>Gelloo</Typography>}
+        title={<Typography variant={"h6"}>{uploadUser}</Typography>}
       
       />
       <CardMedia
         component="img"
         height="300"
-        image={image}
+        image={curImgBase64}
         alt="Paella dish"
       />
       <CardContent>
@@ -70,7 +117,7 @@ const ImageCard = ({image, hideDeleteButton=false}) => {
                 </IconButton>
                 { !hideDeleteButton && 
                 <IconButton aria-label="share">
-                  <ShareIcon sx={{ color: '#bfbfbf' }}/>
+                  <DeleteForeverIcon sx={{ color: '#bfbfbf' }} onClick={handleDelete}/>
                 </IconButton>
                 }
             </Box>
@@ -86,22 +133,8 @@ const ImageCard = ({image, hideDeleteButton=false}) => {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>Method:</Typography>
-          <Typography paragraph>
-            Heat 1/2 cup of the broth in a pot until simmering, add saffron and set
-            aside for 10 minutes.
-          </Typography>
-          <Typography paragraph>
-            Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over
-            medium-high heat. Add chicken, shrimp and chorizo, and cook, stirring
-            occasionally until lightly browned, 6 to 8 minutes. Transfer shrimp to a
-            large plate and set aside, leaving chicken and chorizo in the pan. Add
-            pimentón, bay leaves, garlic, tomatoes, onion, salt and pepper, and cook,
-            stirring often until thickened and fragrant, about 10 minutes. Add
-            saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
-          </Typography>
           <Typography>
-            Set aside off of the heat to let rest for 10 minutes, and then serve.
+            {curDescription}
           </Typography>
         </CardContent>
       </Collapse>

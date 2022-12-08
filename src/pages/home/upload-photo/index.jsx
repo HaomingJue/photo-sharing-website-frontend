@@ -1,5 +1,5 @@
 import { gql, useLazyQuery, useMutation } from "@apollo/client"
-import { Button, Grid, TextareaAutosize, Typography } from "@mui/material"
+import { Button, Card, CircularProgress, Grid, TextareaAutosize, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import { useState } from "react"
 import ReactDropZone from "../../../components/DropZone"
@@ -33,15 +33,15 @@ export const UploadPhotoPage = () => {
 
     // GraphQL
     const [checkPhotoTitle] = useLazyQuery(CEHECK_PHOTO_TITLE, {
-        // onCompleted: (data) => {console.log(data); console.log("cur title", curTitle)},
         onCompleted: (data) => {examinePhoto(data.photoByTitle === null ? null : data.photoByTitle.title)},
+        onError: (err)=> {alert(`${err}`)},
         variables: {
           curTitle,
         }
       })
     
 
-    const [uploadImage] = useMutation(ADD_PHOTO, {
+    const [uploadImage, {loading}] = useMutation(ADD_PHOTO, {
         onCompleted: (data) => {alert(`${data} is uploaded successfully`)},
         onError: (err)=> {alert(`${err}`)},
         variables: {
@@ -56,6 +56,12 @@ export const UploadPhotoPage = () => {
     const examinePhoto = (photoTitle) => {
         if (curImageBase64 === "") {
             alert("No image uploaded")
+        }
+        else if (curTitle === "") {
+            alert("Please write title")
+        }
+        else if (curDescription === "") {
+            alert("Please write description")
         }
         else if (photoTitle === null) {
             uploadImage()
@@ -85,19 +91,16 @@ export const UploadPhotoPage = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log(getLocal())
         setCurUsername(getLocal())
         setCurTitle(data.get('title'));
         setCurDescription(data.get('description'));
-        console.log("check photo title")
         checkPhotoTitle()
       };
-
-
-    //   console.log(curTitle)
-    //   console.log(curDescription)
-    //   console.log(typeof(curUsername), curUsername)
-    //   console.log(curImageBase64)
+    if (loading) return (
+    <Card  sx={{ maxWidth: 551 ,backgroundColor: "rgba(0,0,0,.5)" ,color: "#fff" }}>
+        <CircularProgress color="inherit" />
+    </Card>   
+    )   
 
     return (
         <Box marginTop={"50px"}  component="form" onSubmit={handleSubmit}>
@@ -126,8 +129,8 @@ export const UploadPhotoPage = () => {
                     maxRows={2}
                     color="white"
                     aria-label="maximum height"
-                    placeholder="Maximum 2 rows"
-                    defaultValue="Write down your photo's title here."
+                    placeholder="Write down your photo's title here."
+                    defaultValue=""
                     style={{
                         width:"410px",
                         flex: 1,
@@ -152,8 +155,8 @@ export const UploadPhotoPage = () => {
                     minRows={20}
                     maxRows={25}
                     aria-label="maximum height"
-                    placeholder="Maximum 20 rows"
-                    defaultValue="Record your story and description here."
+                    placeholder="Record your story and description here."
+                    defaultValue=""
                     style={{
                         width:"410px",
                         flex: 1,
