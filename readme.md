@@ -4,7 +4,7 @@ This project is for GNG5300 Individual Project Frontend\
 User can upload photo and delete photo\
 User can like and unlike photo\
 When user likes or unlikes photo, the favorites page will be synchronized.\
-When user deletes a photo, the photo will be removed from all users's like list automatically.
+When user deletes a photo, the photo will be removed from all users' like list automatically.
 
 # Tech Stack
 **Framework:** React.js \
@@ -24,7 +24,7 @@ If the following information shows up, please click `advanced -> Continue to ec2
 
 <img src="./public/readme/security.PNG" width=500px height=400px/> 
 
-**Explanation:** Azure Static Web App accepts https communication only while AWS EC2 deployment is HTTP url. Therefore I self-signed a SSL certificate for the backend project. However, this self-signed certificate will be considered unsafe and thus blocked by modern browser like chrome. In this way, user needs to configure Chrome or other browsers to make the browser permitted to communicate with backend API to fetch data. The easiest way to configure that is by clicking the above backend API url and grant the permission.
+**Explanation:** Azure Static Web App accepts https communication only while AWS EC2 deployment is HTTP url. Therefore I self-signed a SSL certificate for the backend project. However, this self-signed certificate will be considered unsafe and thus is blocked by modern browser like chrome. In this way, user needs to configure Chrome or other browsers to make the browser permitted to communicate with backend API to fetch data. The easiest way to configure that is by clicking the above backend API url and grant the permission.
 
 # Preview
 
