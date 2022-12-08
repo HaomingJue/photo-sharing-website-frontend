@@ -1,5 +1,11 @@
 # Photo Sharing Website Frontend
-This project is for GNG5300 Individual Project Frontend
+This project is for GNG5300 Individual Project Frontend\
+**Highlighted Features:**\
+User can upload photo and delete photo\
+User can like and unlike photo\
+When user likes or unlikes photo, the favorites page will be synchronized.\
+When user deletes a photo, the photo will be removed from all users's like list automatically.
+
 # Tech Stack
 **Framework:** React.js \
 **CI/CD**: Github Actions\
