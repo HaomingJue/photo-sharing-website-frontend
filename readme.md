@@ -7,7 +7,7 @@ This project is for GNG5300 Individual Project Frontend
 **API Caller:** Apollo GraphQL\
 
 # Deployment
- https://delightful-coast-0f8ee860f.2.azurestaticapps.net/login \
+ https://delightful-coast-0f8ee860f.2.azurestaticapps.net/login 
 
 # Preview
 
