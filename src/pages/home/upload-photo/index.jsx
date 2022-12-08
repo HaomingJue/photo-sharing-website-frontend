@@ -1,5 +1,5 @@
 import { gql, useLazyQuery, useMutation } from "@apollo/client"
-import { Button, Card, CircularProgress, Grid, TextareaAutosize, Typography } from "@mui/material"
+import { Alert, Button, Card, CircularProgress, Grid, Snackbar, TextareaAutosize, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import { useState } from "react"
 import ReactDropZone from "../../../components/DropZone"
@@ -30,6 +30,8 @@ export const UploadPhotoPage = () => {
     const [curUsername, setCurUsername] = useState("")
     const [curImageBase64, setCurImageBase64] = useState("")
 
+    const [openUploadAlert, setOpenLikeAlert] = useState(false)
+
 
     // GraphQL
     const [checkPhotoTitle] = useLazyQuery(CEHECK_PHOTO_TITLE, {
@@ -42,7 +44,7 @@ export const UploadPhotoPage = () => {
     
 
     const [uploadImage, {loading}] = useMutation(ADD_PHOTO, {
-        onCompleted: (data) => {alert(`${data} is uploaded successfully`)},
+        onCompleted: (data) => {setOpenLikeAlert(true)},
         onError: (err)=> {alert(`${err}`)},
         variables: {
             curTitle,
@@ -53,6 +55,11 @@ export const UploadPhotoPage = () => {
     })
     
     // Other services
+    const handleUploadClose = () => {
+        setOpenLikeAlert(false)
+    }
+
+
     const examinePhoto = (photoTitle) => {
         if (curImageBase64 === "") {
             alert("No image uploaded")
@@ -103,86 +110,93 @@ export const UploadPhotoPage = () => {
     )   
 
     return (
-        <Box marginTop={"50px"}  component="form" onSubmit={handleSubmit}>
-            <Grid
-            container
-            spacing={4}
-            direction="column"
-            alignItems="center"
-            >
-            <Grid item>
-                <Typography variant="h4">
-                    Upload Your Photo
-                </Typography>
-            </Grid>
-            <Grid item>
-                <ReactDropZone onDrop={handleOnDrop}/>
-            </Grid>   
-            {(curImageBase64 !== "" ) && <Grid item>
-                    <img src={curImageBase64} alt="error" width="80px" height="60px"/>
-                </Grid>   
-            }
-            <Grid item>
-                <TextareaAutosize
-                    name="title"
-                    minRows={2}
-                    maxRows={2}
-                    color="white"
-                    aria-label="maximum height"
-                    placeholder="Write down your photo's title here."
-                    defaultValue=""
-                    style={{
-                        width:"410px",
-                        flex: 1,
-                        padding: "20px",
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        borderWidth: 1,
-                        borderRadius: 2,
-                        borderColor: '#eeeeee',
-                    
-                        backgroundColor: "rgba(0,0,0,0.5)",
-                        color: '#bdbdbd',
-                        outline: 'none',
-                        transition: 'border .24s ease-in-out'
-                    }}
-                />
-            </Grid>
-            <Grid item>
-                <TextareaAutosize
-                    name="description"
-                    minRows={20}
-                    maxRows={25}
-                    aria-label="maximum height"
-                    placeholder="Record your story and description here."
-                    defaultValue=""
-                    style={{
-                        width:"410px",
-                        flex: 1,
-                        padding: "20px",
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        borderWidth: 1,
-                        borderRadius: 2,
-                        borderColor: '#eeeeee',
-                   
-                        backgroundColor: "rgba(0,0,0,0.5)",
-                        color: '#bdbdbd',
-                        outline: 'none',
-                        transition: 'border .24s ease-in-out'
-                    }}
-                />
-            </Grid>
-            <Grid item >
-                <Button  type="submit" sx={{backgroundColor: "#9966ff", width: "200px", marginTop:"30px"}}>
-                    <Typography color={"white"}>
-                        Upload
-                    </Typography>
-                </Button>
-            </Grid>   
-        </Grid> 
+        <Box>        
+            <Snackbar open={openUploadAlert} onClose={handleUploadClose} autoHideDuration={1800} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
+                <Alert  severity="success" onClose={handleUploadClose} sx={{ width: '100%' }}>
+                Upload Successful
+                </Alert>
+            </Snackbar>
+            <Box marginTop={"50px"}  component="form" onSubmit={handleSubmit}>
+                <Grid
+                container
+                spacing={4}
+                direction="column"
+                alignItems="center"
+                >
+                    <Grid item>
+                        <Typography variant="h4">
+                            Upload Your Photo
+                        </Typography>
+                    </Grid>
+                    <Grid item>
+                        <ReactDropZone onDrop={handleOnDrop}/>
+                    </Grid>   
+                    {(curImageBase64 !== "" ) && <Grid item>
+                            <img src={curImageBase64} alt="error" width="80px" height="60px"/>
+                        </Grid>   
+                    }
+                    <Grid item>
+                        <TextareaAutosize
+                            name="title"
+                            minRows={2}
+                            maxRows={2}
+                            color="white"
+                            aria-label="maximum height"
+                            placeholder="Write down your photo's title here."
+                            defaultValue=""
+                            style={{
+                                width:"410px",
+                                flex: 1,
+                                padding: "20px",
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                borderWidth: 1,
+                                borderRadius: 2,
+                                borderColor: '#eeeeee',
+                            
+                                backgroundColor: "rgba(0,0,0,0.5)",
+                                color: '#bdbdbd',
+                                outline: 'none',
+                                transition: 'border .24s ease-in-out'
+                            }}
+                        />
+                    </Grid>
+                    <Grid item>
+                        <TextareaAutosize
+                            name="description"
+                            minRows={20}
+                            maxRows={25}
+                            aria-label="maximum height"
+                            placeholder="Record your story and description here."
+                            defaultValue=""
+                            style={{
+                                width:"410px",
+                                flex: 1,
+                                padding: "20px",
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                borderWidth: 1,
+                                borderRadius: 2,
+                                borderColor: '#eeeeee',
+                        
+                                backgroundColor: "rgba(0,0,0,0.5)",
+                                color: '#bdbdbd',
+                                outline: 'none',
+                                transition: 'border .24s ease-in-out'
+                            }}
+                        />
+                    </Grid>
+                    <Grid item >
+                        <Button  type="submit" sx={{backgroundColor: "#9966ff", width: "200px", marginTop:"30px"}}>
+                            <Typography color={"white"}>
+                                Upload
+                            </Typography>
+                        </Button>
+                    </Grid>   
+                </Grid> 
+            </Box>
         </Box>
     )
 }
