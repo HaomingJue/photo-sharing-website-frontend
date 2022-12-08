@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import {ApolloClient, ApolloProvider, InMemoryCache} from "@apollo/client"
 
 const client = new ApolloClient({
-    uri: "http://ec2-18-212-2-78.compute-1.amazonaws.com/graphql",
+    uri: "https://ec2-18-212-2-78.compute-1.amazonaws.com/graphql",
     cache: new InMemoryCache(),
 })
 
