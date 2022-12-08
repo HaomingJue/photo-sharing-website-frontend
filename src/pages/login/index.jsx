@@ -12,6 +12,7 @@ import { checkLoginStatus } from '../../services/checkLoginStatus';
 import { gql, useLazyQuery } from '@apollo/client';
 import { setLocal } from '../../services/localStorage';
 import { useState } from 'react';
+import { Alert, Snackbar } from '@mui/material';
 
 
 const LOGINQUERY = gql`
@@ -25,6 +26,12 @@ const LOGINQUERY = gql`
   }`
 
 export default function SignIn() {
+
+  // Alert
+  const [openAuthAlert, setOpenAuthAlert] = useState(false)
+  const handleAuthClose = () => {
+    setOpenAuthAlert(false)
+  }
 
   // initial check
   let navigate = useNavigate()
@@ -51,7 +58,7 @@ export default function SignIn() {
   // other services
   const postLoginProcess = (verifiedUsername) => {
     if (verifiedUsername === null) {
-      alert("Username or password is not correct")
+      setOpenAuthAlert(true)
     }
     else {
       setLocal(verifiedUsername);
@@ -70,6 +77,11 @@ export default function SignIn() {
 
   return (
     <Box className="LoginPage">
+        <Snackbar open={openAuthAlert} onClose={handleAuthClose} autoHideDuration={1800} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
+            <Alert  severity="error" onClose={handleAuthClose} sx={{ width: '100%' }}>
+              Username or password is not correct
+            </Alert>
+        </Snackbar>
       <Container component="main" maxWidth="xs" sx={{backgroundColor: "rgba(0,0,0,.45)" ,color: "#fff"}}>
   
         <Box
