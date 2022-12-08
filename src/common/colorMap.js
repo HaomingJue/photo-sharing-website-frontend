@@ -7,7 +7,7 @@ export const colorMap = {
     'F': "#FFFAF0",
     'G': "#FFD700",
     'H': "#FF69B4",
-    'I': "#FFFFF0",
+    'I': "#00cc66",
     'J': "#FFDEAD",
     'K': "#87CEEB",
     'L': "#708090",
