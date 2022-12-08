@@ -6,7 +6,8 @@ This project is for GNG5300 Individual Project Frontend
 **Cloud Platform:** Azure Static Web App\
 **API Caller:** Apollo GraphQL\
 
-Please check https://ec2-18-212-2-78.compute-1.amazonaws.com/graphiql \
+# Deployment
+ https://delightful-coast-0f8ee860f.2.azurestaticapps.net/login \
 
 # Preview
 
