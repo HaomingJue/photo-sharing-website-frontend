@@ -13,7 +13,7 @@ When user deletes a photo, the photo will be removed from all users's like list 
 **API Caller:** Apollo GraphQL
 
 # System Architecture
-<img src="./public/readme/systemArchitecture.PNG" width=45% />
+<img src="./public/readme/systemArchitecture.PNG" width=90% />
 
 # Deployment
  https://delightful-coast-0f8ee860f.2.azurestaticapps.net/login 
