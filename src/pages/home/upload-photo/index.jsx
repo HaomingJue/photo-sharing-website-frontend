@@ -30,7 +30,29 @@ export const UploadPhotoPage = () => {
     const [curUsername, setCurUsername] = useState("")
     const [curImageBase64, setCurImageBase64] = useState("")
 
-    const [openUploadAlert, setOpenLikeAlert] = useState(false)
+    const [openUploadAlert, setOpenUploadAlert] = useState(false)
+    const [openPhotoAlert, setOpenPhotoAlert] = useState(false)
+    const [openTitleAlert, setOpenTitleAlert] = useState(false)
+    const [openDescAlert, setOpenDescAlert] = useState(false)
+    const [openExistAlert, setOpenExistAlert] = useState(false)
+    
+    
+    // Alert
+    const handleUploadClose = () => {
+        setOpenUploadAlert(false)
+    }
+    const handleTitleClose = () => {
+        setOpenTitleAlert(false)
+    }
+    const handleDescClose = () => {
+        setOpenDescAlert(false)
+    }
+    const handlePhotoClose = () => {
+        setOpenPhotoAlert(false)
+    }
+    const handleExistClose = () => {
+        setOpenExistAlert(false)
+    }
 
 
     // GraphQL
@@ -44,7 +66,7 @@ export const UploadPhotoPage = () => {
     
 
     const [uploadImage, {loading}] = useMutation(ADD_PHOTO, {
-        onCompleted: (data) => {setOpenLikeAlert(true)},
+        onCompleted: (data) => {setOpenUploadAlert(true)},
         onError: (err)=> {alert(`${err}`)},
         variables: {
             curTitle,
@@ -55,26 +77,23 @@ export const UploadPhotoPage = () => {
     })
     
     // Other services
-    const handleUploadClose = () => {
-        setOpenLikeAlert(false)
-    }
 
 
     const examinePhoto = (photoTitle) => {
         if (curImageBase64 === "") {
-            alert("No image uploaded")
+            setOpenPhotoAlert(true)
         }
         else if (curTitle === "") {
-            alert("Please write title")
+            setOpenTitleAlert(true)
         }
         else if (curDescription === "") {
-            alert("Please write description")
+            setOpenDescAlert(true)
         }
         else if (photoTitle === null) {
             uploadImage()
         }
         else {
-            alert(`${photoTitle} already exists`)
+            setOpenExistAlert(true)
         }
     }
 
@@ -114,6 +133,26 @@ export const UploadPhotoPage = () => {
             <Snackbar open={openUploadAlert} onClose={handleUploadClose} autoHideDuration={1800} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
                 <Alert  severity="success" onClose={handleUploadClose} sx={{ width: '100%' }}>
                 Upload Successful
+                </Alert>
+            </Snackbar>
+            <Snackbar open={openPhotoAlert} onClose={handlePhotoClose} autoHideDuration={1800} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
+                <Alert  severity="error" onClose={handlePhotoClose} sx={{ width: '100%' }}>
+                Photo is empty
+                </Alert>
+            </Snackbar>
+            <Snackbar open={openTitleAlert} onClose={handleTitleClose} autoHideDuration={1800} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
+                <Alert  severity="error" onClose={handleTitleClose} sx={{ width: '100%' }}>
+                Title is empty
+                </Alert>
+            </Snackbar>
+            <Snackbar open={openDescAlert} onClose={handleDescClose} autoHideDuration={1800} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
+                <Alert  severity="error" onClose={handleDescClose} sx={{ width: '100%' }}>
+                Description is empty
+                </Alert>
+            </Snackbar>
+            <Snackbar open={openExistAlert} onClose={handleExistClose} autoHideDuration={1800} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
+                <Alert  severity="error" onClose={handleExistClose} sx={{ width: '100%' }}>
+                Photo title already exists
                 </Alert>
             </Snackbar>
             <Box marginTop={"50px"}  component="form" onSubmit={handleSubmit}>

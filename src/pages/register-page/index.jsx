@@ -10,6 +10,7 @@ import "./index.css";
 import { useNavigate } from 'react-router';
 import { useMutation, gql, useLazyQuery } from "@apollo/client"; 
 import { useState } from 'react';
+import { Alert, Snackbar } from '@mui/material';
 
 const ADD_USER = gql`
   mutation addUser($username: String!, $password: String!) {
@@ -28,6 +29,9 @@ const CHECK_USER = gql`
 
 
 export default function RegisterPage() {
+  const [openPwdAlert, setOpenPwdAlert] = useState(false)
+  const [openUsernameAlert, setOpenUsernameAlert] = useState(false)
+  const [openRegisterAlert, setOpenRegisterAlert] = useState(false)
 
   let navigate = useNavigate();
 
@@ -36,7 +40,7 @@ export default function RegisterPage() {
 
   // GraphQL
   const [registerAccount] = useMutation(ADD_USER, {
-    onCompleted: (data) => {console.log("data", data);finishRegistration(data.addUser.username)},
+    onCompleted: (data) => {setOpenRegisterAlert(true)},
     onError: (err)=> {alert(`${err}`)},
     variables: {
         username,
@@ -57,13 +61,8 @@ export default function RegisterPage() {
         registerAccount()
       }
       else {
-        alert(`User ${examinedUsername} already exists`)
+        setOpenUsernameAlert(true)
       }
-  }
-
-  const finishRegistration = (finalUsername) => {
-    alert(`User ${finalUsername} is registered successfully`);
-    navigate("/login")
   }
 
   // Submit Form
@@ -74,7 +73,7 @@ export default function RegisterPage() {
     let curPwd = formData.get('password');
     let curRepeatPwd = formData.get('repeat_password');
     if (curPwd !== curRepeatPwd) {
-      alert("Passwords don't match")
+      setOpenPwdAlert(true)
     }
     else {
       setUsername(curUserName)
@@ -83,9 +82,38 @@ export default function RegisterPage() {
     }
   };
 
+  // Alerts
+  const handleUsernameClose = () => {
+    setOpenUsernameAlert(false)
+  }
+
+  const handlePwdClose = () => {
+    setOpenPwdAlert(false)
+  }
+
+  const handleRegisterClose = (finalUsername) => {
+    setOpenRegisterAlert(false)
+    navigate("/login")
+  }
+
 
   return (
     <Box className="LoginPage">
+        <Snackbar open={openPwdAlert} onClose={handlePwdClose} autoHideDuration={2500} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
+          <Alert  severity="error" onClose={handlePwdClose} sx={{ width: '100%' }}>
+            Passwords don't match
+          </Alert>
+        </Snackbar>
+        <Snackbar open={openUsernameAlert} onClose={handleUsernameClose} autoHideDuration={2500} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
+          <Alert  severity="error" onClose={handleUsernameClose} sx={{ width: '100%' }}>
+            Username already exists
+          </Alert>
+        </Snackbar>
+        <Snackbar open={openRegisterAlert} onClose={handleRegisterClose} autoHideDuration={2500} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
+          <Alert  severity="success" onClose={handleRegisterClose} sx={{ width: '100%' }}>
+            Register Successful
+          </Alert>
+        </Snackbar>
  
 
       <Container component="main" maxWidth="xs" sx={{backgroundColor: "rgba(0,0,0,.45)" ,color: "#fff"}}>

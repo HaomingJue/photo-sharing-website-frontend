@@ -15,7 +15,6 @@ import { Box } from '@mui/system';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useState } from 'react';
-import {  useNavigate } from 'react-router';
 import { colorMap } from '../common/colorMap';
 import { Alert, CircularProgress, Snackbar } from '@mui/material';
 import { getLocal } from '../services/localStorage';
@@ -41,10 +40,18 @@ const LIKE_ONE_PHOTO  = gql`
 
 const UNLIKE_ONE_PHOTO  = gql`
     mutation UnLikeOnePhoto($loggedInUser: String!, $photoTitle: String!) {
-        likePhoto(username: $loggedInUser, photoTitle: $photoTitle) {
+        unLikePhoto(username: $loggedInUser, photoTitle: $photoTitle) {
            likedPhotos
         }
     }
+`
+
+const DELETE_ONE_PHOTO = gql`
+  mutation DeleteOnePhoto($loggedInUser: String!, $photoTitle: String!) {
+      deletePhoto(username: $loggedInUser, photoTitle: $photoTitle) {
+        title
+      }
+  }
 `
 
 
@@ -54,6 +61,7 @@ const ImageCard = ({photoTitle, hideDeleteButton=true}) => {
   const [likeStatus, setLikeStatus] = useState(false)
   const [openLikeAlert, setOpenLikeAlert] = useState(false);
   const [openUnlikeAlert, setOpenUnlikeAlert] = useState(false);
+  const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
 
   var loggedInUser = getLocal();
 
@@ -99,6 +107,15 @@ const ImageCard = ({photoTitle, hideDeleteButton=true}) => {
     }
   })
 
+  const [deleteAPhoto] = useMutation(DELETE_ONE_PHOTO, {
+    onCompleted: (data)=> {setOpenDeleteAlert(true)},
+    onError: (err) => {alert(`${err}`)},
+    variables: {
+      loggedInUser,
+      photoTitle
+    }
+  })
+
 
   // Other services
 
@@ -108,6 +125,10 @@ const ImageCard = ({photoTitle, hideDeleteButton=true}) => {
 
   const handleUnlikeClose = () => {
     setOpenUnlikeAlert(false);
+  };
+
+  const handleDeleteClose = () => {
+    setOpenDeleteAlert(false);
   };
 
 
@@ -129,10 +150,8 @@ const ImageCard = ({photoTitle, hideDeleteButton=true}) => {
   };
 
 
-
-  let navigate = useNavigate()
   const handleDelete = () => {
-    navigate("/home/all-photos")
+    deleteAPhoto();
   }
 
   
@@ -147,12 +166,17 @@ const ImageCard = ({photoTitle, hideDeleteButton=true}) => {
     <Box>
         <Snackbar open={openLikeAlert} onClose={handleLikeClose} autoHideDuration={1800} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
           <Alert  severity="success" onClose={handleLikeClose} sx={{ width: '100%' }}>
-            Like Image Successful
+            Like Photo Successful
           </Alert>
         </Snackbar>
         <Snackbar open={openUnlikeAlert} onClose={handleUnlikeClose} autoHideDuration={1800} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
           <Alert  severity="warning" onClose={handleUnlikeClose} sx={{ width: '100%' }}>
-            Unike Image Successful
+            Unike Photo Successful
+          </Alert>
+        </Snackbar>
+        <Snackbar open={openDeleteAlert} onClose={handleDeleteClose} autoHideDuration={1800} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
+          <Alert  severity="error" onClose={handleDeleteClose} sx={{ width: '100%' }}>
+            Delete Photo Successfully, please refresh
           </Alert>
         </Snackbar>
 
@@ -182,7 +206,7 @@ const ImageCard = ({photoTitle, hideDeleteButton=true}) => {
           />
           <CardContent>
             <Typography variant="h6" color="white">
-              This impressive paella 
+              {photoTitle}
             </Typography>
           </CardContent>
           <CardActions >

@@ -23,7 +23,7 @@ const Sidebar = () => {
                     Welcome
                 </Typography>
                 <Typography component="h4" variant="h4" color="white " marginBottom="30px">
-                    Frankson
+                    {getLocal()}
                 </Typography>
             </Grid>
         </Box>
