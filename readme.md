@@ -14,7 +14,7 @@ This project is for GNG5300 Individual Project Frontend
 
  ## IMPORTANT!!!
 Before visiting the deployment link, please visit [this link](https://ec2-18-212-2-78.compute-1.amazonaws.com/graphiql) (It is my backend API URL)\
-If the following information shows up, please click `advanced -> Continue to ec2-18-212-2-78.compute-1.amazonaws.com (unsafe)`first and then visit the deployed website.
+If the following information shows up, please click `advanced -> Continue to ec2-18-212-2-78.compute-1.amazonaws.com (unsafe)`first and then you can visit [the deployed website]( https://delightful-coast-0f8ee860f.2.azurestaticapps.net/login ).
 
 <img src="./public/readme/security.PNG" width=500px height=400px/> 
 
