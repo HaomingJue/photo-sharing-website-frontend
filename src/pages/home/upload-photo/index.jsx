@@ -91,6 +91,7 @@ export const UploadPhotoPage = () => {
         }
         else if (photoTitle === null) {
             uploadImage()
+            setCurImageBase64("")
         }
         else {
             setOpenExistAlert(true)
