@@ -16,11 +16,12 @@ When user deletes a photo, the photo will be removed from all users' like list a
 <img src="./public/readme/systemArchitecture.PNG" width=90% />
 
 # Deployment
- https://delightful-coast-0f8ee860f.2.azurestaticapps.net/login 
+ https://photo-sharing-portal-gng5300.netlify.app/login (current)
+ https://delightful-coast-0f8ee860f.2.azurestaticapps.net/login (disabled)
 
  ## IMPORTANT!!!
 Before visiting the deployment link, please visit [this link](https://ec2-18-212-2-78.compute-1.amazonaws.com/graphiql) (It is my backend API URL)\
-If the following information shows up, please click `advanced -> Continue to ec2-18-212-2-78.compute-1.amazonaws.com (unsafe)`first and then you can visit [the deployed website]( https://delightful-coast-0f8ee860f.2.azurestaticapps.net/login ).
+If the following information shows up, please click `advanced -> Continue to ec2-18-212-2-78.compute-1.amazonaws.com (unsafe)`first and then you can visit [the deployed website](https://photo-sharing-portal-gng5300.netlify.app/login ).
 
 <img src="./public/readme/security.PNG" width=500px height=400px/> 
 
