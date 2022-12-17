@@ -16,7 +16,7 @@ When user deletes a photo, the photo will be removed from all users' like list a
 <img src="./public/readme/systemArchitecture.PNG" width=90% />
 
 # Deployment
- https://photo-sharing-portal-gng5300.netlify.app/login (current)
+ https://photo-sharing-portal-gng5300.netlify.app/login (current)\
  https://delightful-coast-0f8ee860f.2.azurestaticapps.net/login (disabled)
 
  ## IMPORTANT!!!
